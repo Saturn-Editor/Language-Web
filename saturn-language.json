@@ -2,8 +2,8 @@
   "id": "web",
   "name": "HTML & CSS",
   "badge": "HTML",
-  "version": "1.0.0",
-  "description": "Language module for HTML and CSS: highlighting, language servers, live preview and templates",
+  "version": "1.0.1",
+  "description": "Language module for HTML and CSS.",
   "saturnApi": "^0.2",
   "main": "module.js",
   "requires": [
