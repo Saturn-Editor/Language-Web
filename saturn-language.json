@@ -2,7 +2,7 @@
   "id": "web",
   "name": "Web",
   "badge": "WEB",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Language module for HTML, CSS, JavaScript and TypeScript.",
   "saturnApi": "^0.2",
   "main": "module.js",

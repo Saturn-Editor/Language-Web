@@ -1,13 +1,14 @@
 /**
- * Starts the HTML, CSS and TypeScript language servers for Saturn behind one stdio connection: the user's configured
- * vscode-langservers-extracted if set (argv[2]), otherwise the copy in module storage, plus typescript-language-server
- * from module storage, downloading either first when missing. If the TypeScript server can't be installed, HTML and
- * CSS still start and JS/TS requests get empty replies. stdout belongs to LSP, so progress goes to stderr.
+ * Starts the HTML, CSS, TypeScript and Tailwind CSS language servers for Saturn behind one stdio connection: the
+ * user's configured vscode-langservers-extracted if set (argv[2]), otherwise the copy in module storage, plus
+ * typescript-language-server and the Tailwind server from module storage, downloading them first when missing. If
+ * the TypeScript server can't be installed, HTML and CSS still start and JS/TS requests get empty replies; without the
+ * Tailwind server, documents just don't get Tailwind features. stdout belongs to LSP, so progress goes to stderr.
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { createMux, readMessages, writeMessage } from '../lib/mux.js';
-import { install, isInstalled, packageDir, serverScript } from '../lib/servers.js';
+import { install, isInstalled, packageDir, serverScript, tailwindScript } from '../lib/servers.js';
 import * as tsls from '../lib/tsls.js';
 
 const configured = (process.argv[2] ?? '').trim();
@@ -53,6 +54,10 @@ try {
     children[name] = spawn(process.execPath, [script, '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
   }
   const tsServer = await resolveTypeScript();
+  // Tailwind works in every document, alongside the main server, and stays idle in projects without Tailwind.
+  if (storage && existsSync(tailwindScript(storage))) {
+    children.tailwind = spawn(process.execPath, [tailwindScript(storage), '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
+  }
   if (tsServer) children.ts = spawn(process.execPath, [tsServer, '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
 
   const client = { write: (msg) => writeMessage(process.stdout, msg) };
@@ -62,7 +67,7 @@ try {
   const mux = createMux({
     client,
     servers,
-    route: (uri) => (CSS_FILE.test(uri) ? 'css' : SCRIPT_FILE.test(uri) ? 'ts' : 'html'),
+    route: (uri) => [CSS_FILE.test(uri) ? 'css' : SCRIPT_FILE.test(uri) ? 'ts' : 'html', 'tailwind'],
     fallback: 'html',
     initializationOptions: {
       html: { provideFormatter: true, embeddedLanguages: { css: true, javascript: true } },
