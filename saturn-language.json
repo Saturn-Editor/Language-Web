@@ -1,8 +1,8 @@
 {
   "id": "web",
-  "name": "HTML & CSS",
-  "badge": "HTML",
-  "version": "1.0.1",
+  "name": "Web",
+  "badge": "WEB",
+  "version": "1.0.2",
   "description": "Language module for HTML and CSS.",
   "saturnApi": "^0.2",
   "main": "module.js",
