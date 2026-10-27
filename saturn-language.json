@@ -1,0 +1,133 @@
+{
+  "id": "web",
+  "name": "HTML & CSS",
+  "badge": "HTML",
+  "version": "1.0.0",
+  "description": "Language module for HTML and CSS: highlighting, language servers, live preview and templates",
+  "saturnApi": "^0.2",
+  "main": "module.js",
+  "requires": [
+    {
+      "name": "npm",
+      "command": "npm",
+      "args": [
+        "--version"
+      ],
+      "install": "Install Node.js (which includes npm) from https://nodejs.org/en/download"
+    }
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.html",
+    "workspaceContains:**/*.htm",
+    "workspaceContains:**/*.css"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "html",
+        "name": "HTML",
+        "extensions": [
+          ".html",
+          ".htm",
+          ".xhtml"
+        ],
+        "grammar": "grammars/html.tmLanguage.json",
+        "scopeName": "text.html.basic"
+      },
+      {
+        "id": "css",
+        "name": "CSS",
+        "extensions": [
+          ".css"
+        ],
+        "grammar": "grammars/css.tmLanguage.json",
+        "scopeName": "source.css"
+      }
+    ],
+    "previews": [
+      {
+        "id": "web.htmlPreview",
+        "label": "Preview",
+        "extensions": [
+          ".html",
+          ".htm"
+        ]
+      }
+    ],
+    "languageServer": {
+      "languages": [
+        "html",
+        "css"
+      ],
+      "command": "node",
+      "args": [
+        "server/launch.js",
+        "${setting:web.serverPath}"
+      ],
+      "features": [
+        "completion",
+        "diagnostics",
+        "hover",
+        "definition",
+        "symbols",
+        "references",
+        "rename",
+        "formatting"
+      ]
+    },
+    "fileTemplates": [
+      {
+        "id": "web.page",
+        "label": "HTML Page",
+        "kind": "file",
+        "extension": ".html",
+        "placeholder": "index"
+      },
+      {
+        "id": "web.stylesheet",
+        "label": "CSS Stylesheet",
+        "kind": "file",
+        "extension": ".css",
+        "placeholder": "style"
+      }
+    ],
+    "commands": [
+      {
+        "id": "web.installLanguageServer",
+        "title": "Install/Update HTML & CSS language servers"
+      }
+    ],
+    "settings": [
+      {
+        "id": "web.serverPath",
+        "label": "vscode-langservers-extracted location",
+        "type": "file",
+        "default": "",
+        "description": "Folder of a vscode-langservers-extracted install. Leave empty to use the copy Saturn downloads automatically."
+      }
+    ],
+    "newProject": {
+      "language": "html",
+      "fields": [
+        {
+          "id": "title",
+          "label": "Page title (blank: from folder name)",
+          "type": "text",
+          "default": ""
+        },
+        {
+          "id": "stylesheet",
+          "label": "Create style.css",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "id": "gitignore",
+          "label": "Create .gitignore",
+          "type": "checkbox",
+          "default": true
+        }
+      ]
+    }
+  }
+}
