@@ -3,7 +3,7 @@
   "name": "Web",
   "badge": "WEB",
   "version": "1.0.2",
-  "description": "Language module for HTML and CSS.",
+  "description": "Language module for HTML, CSS, JavaScript and TypeScript.",
   "saturnApi": "^0.2",
   "main": "module.js",
   "requires": [
@@ -19,7 +19,12 @@
   "activationEvents": [
     "workspaceContains:**/*.html",
     "workspaceContains:**/*.htm",
-    "workspaceContains:**/*.css"
+    "workspaceContains:**/*.css",
+    "workspaceContains:**/package.json",
+    "workspaceContains:**/tsconfig.json",
+    "workspaceContains:**/jsconfig.json",
+    "workspaceContains:**/*.js",
+    "workspaceContains:**/*.ts"
   ],
   "contributes": {
     "languages": [
@@ -42,6 +47,38 @@
         ],
         "grammar": "grammars/css.tmLanguage.json",
         "scopeName": "source.css"
+      },
+      {
+        "id": "javascript",
+        "name": "JavaScript",
+        "extensions": [
+          ".js",
+          ".mjs",
+          ".cjs",
+          ".jsx"
+        ],
+        "grammar": "grammars/javascript.tmLanguage.json",
+        "scopeName": "source.js"
+      },
+      {
+        "id": "typescript",
+        "name": "TypeScript",
+        "extensions": [
+          ".ts",
+          ".mts",
+          ".cts"
+        ],
+        "grammar": "grammars/typescript.tmLanguage.json",
+        "scopeName": "source.ts"
+      },
+      {
+        "id": "typescriptreact",
+        "name": "TypeScript JSX",
+        "extensions": [
+          ".tsx"
+        ],
+        "grammar": "grammars/typescriptreact.tmLanguage.json",
+        "scopeName": "source.tsx"
       }
     ],
     "previews": [
@@ -57,7 +94,10 @@
     "languageServer": {
       "languages": [
         "html",
-        "css"
+        "css",
+        "javascript",
+        "typescript",
+        "typescriptreact"
       ],
       "command": "node",
       "args": [
@@ -89,14 +129,55 @@
         "kind": "file",
         "extension": ".css",
         "placeholder": "style"
+      },
+      {
+        "id": "javascript.module",
+        "label": "JavaScript Module",
+        "kind": "file",
+        "extension": ".js",
+        "placeholder": "module"
+      },
+      {
+        "id": "typescript.module",
+        "label": "TypeScript Module",
+        "kind": "file",
+        "extension": ".ts",
+        "placeholder": "module"
+      },
+      {
+        "id": "typescript.class",
+        "label": "TypeScript Class",
+        "kind": "file",
+        "extension": ".ts",
+        "placeholder": "MyClass"
+      },
+      {
+        "id": "typescript.interface",
+        "label": "TypeScript Interface",
+        "kind": "file",
+        "extension": ".ts",
+        "placeholder": "MyInterface"
       }
     ],
     "commands": [
       {
         "id": "web.installLanguageServer",
-        "title": "Install/Update HTML & CSS language servers"
+        "title": "Install/Update HTML & CSS Language Servers"
+      },
+      {
+        "id": "javascript.openPackageJson",
+        "title": "Open package.json"
+      },
+      {
+        "id": "javascript.npmInstall",
+        "title": "Install Dependencies (npm install)"
+      },
+      {
+        "id": "javascript.installLanguageServer",
+        "title": "Install/Update TypeScript Language Server"
       }
     ],
+    "runConfigurations": true,
     "settings": [
       {
         "id": "web.serverPath",
@@ -104,28 +185,184 @@
         "type": "file",
         "default": "",
         "description": "Folder of a vscode-langservers-extracted install. Leave empty to use the copy Saturn downloads automatically."
+      },
+      {
+        "id": "javascript.packageManager",
+        "label": "Package manager",
+        "type": "select",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Detect from lockfile"
+          },
+          {
+            "value": "npm",
+            "label": "npm"
+          },
+          {
+            "value": "pnpm",
+            "label": "pnpm"
+          },
+          {
+            "value": "yarn",
+            "label": "yarn"
+          },
+          {
+            "value": "bun",
+            "label": "bun"
+          }
+        ],
+        "description": "Used for run configurations and installing dependencies."
       }
     ],
     "newProject": {
-      "language": "html",
+      "language": "web",
+      "tabs": [
+        {
+          "id": "frontend",
+          "label": "Frontend",
+          "templates": [
+            {
+              "id": "html",
+              "label": "HTML Page",
+              "description": "A single index.html with an optional stylesheet."
+            },
+            {
+              "id": "bootstrap",
+              "label": "Bootstrap",
+              "description": "An HTML page styled with Bootstrap 5, loaded from a CDN."
+            },
+            {
+              "id": "html5boilerplate",
+              "label": "HTML5 Boilerplate",
+              "description": "The HTML5 Boilerplate starter site."
+            },
+            {
+              "id": "vite",
+              "label": "Vite",
+              "description": "A minimal Vite app with no framework (create-vite)."
+            },
+            {
+              "id": "react",
+              "label": "React",
+              "description": "A React single-page app built with Vite (create-vite)."
+            },
+            {
+              "id": "preact",
+              "label": "Preact",
+              "description": "A Preact app built with Vite (create-vite)."
+            },
+            {
+              "id": "vue",
+              "label": "Vue.js",
+              "description": "A Vue 3 app with Vue Router, built with Vite (create-vue)."
+            },
+            {
+              "id": "angular",
+              "label": "Angular CLI",
+              "description": "An Angular app from ng new, with the default options."
+            },
+            {
+              "id": "next",
+              "label": "Next.js",
+              "description": "A Next.js App Router app with Tailwind CSS and ESLint (create-next-app)."
+            },
+            {
+              "id": "nuxt",
+              "label": "Nuxt",
+              "description": "A minimal Nuxt app (nuxi init)."
+            },
+            {
+              "id": "react-native",
+              "label": "React Native",
+              "description": "A React Native app using Expo (create-expo-app)."
+            }
+          ]
+        },
+        {
+          "id": "backend",
+          "label": "Backend",
+          "templates": [
+            {
+              "id": "node",
+              "label": "Node.js",
+              "description": "A Node.js project with package.json and src/index."
+            },
+            {
+              "id": "express",
+              "label": "Express",
+              "description": "An Express 5 HTTP server, with its dependencies installed."
+            }
+          ]
+        }
+      ],
       "fields": [
+        {
+          "id": "language",
+          "label": "Language",
+          "type": "select",
+          "default": "typescript",
+          "options": [
+            {
+              "value": "typescript",
+              "label": "TypeScript"
+            },
+            {
+              "value": "javascript",
+              "label": "JavaScript"
+            }
+          ],
+          "when": {
+            "template": [
+              "node",
+              "express",
+              "vite",
+              "react",
+              "preact",
+              "vue",
+              "next",
+              "react-native"
+            ]
+          }
+        },
         {
           "id": "title",
           "label": "Page title (blank: from folder name)",
           "type": "text",
-          "default": ""
+          "default": "",
+          "when": {
+            "template": [
+              "html",
+              "bootstrap"
+            ]
+          }
         },
         {
           "id": "stylesheet",
           "label": "Create style.css",
           "type": "checkbox",
-          "default": true
+          "default": true,
+          "when": {
+            "template": [
+              "html",
+              "bootstrap"
+            ]
+          }
         },
         {
           "id": "gitignore",
           "label": "Create .gitignore",
           "type": "checkbox",
-          "default": true
+          "default": true,
+          "when": {
+            "template": [
+              "html",
+              "bootstrap",
+              "node",
+              "express"
+            ]
+          }
         }
       ]
     }

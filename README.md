@@ -1,1 +1,1 @@
-# Web - HTML & CSS for Saturn
+# Web - HTML, CSS, JavaScript & TypeScript for Saturn
