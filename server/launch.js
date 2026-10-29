@@ -10,6 +10,7 @@ import { existsSync } from 'node:fs';
 import { createMux, readMessages, writeMessage } from '../lib/mux.js';
 import { install, isInstalled, packageDir, serverScript, tailwindScript } from '../lib/servers.js';
 import * as tsls from '../lib/tsls.js';
+import { nodeFor } from '../lib/javascript/node-versions.js';
 
 const configured = (process.argv[2] ?? '').trim();
 const storage = process.env.SATURN_MODULE_STORAGE;
@@ -58,7 +59,8 @@ try {
   if (storage && existsSync(tailwindScript(storage))) {
     children.tailwind = spawn(process.execPath, [tailwindScript(storage), '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
   }
-  if (tsServer) children.ts = spawn(process.execPath, [tsServer, '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
+  // tsserver runs on the project's chosen Node version (Saturn starts the launcher in the project folder).
+  if (tsServer) children.ts = spawn(nodeFor(storage, process.cwd()), [tsServer, '--stdio'], { stdio: ['pipe', 'pipe', 'inherit'] });
 
   const client = { write: (msg) => writeMessage(process.stdout, msg) };
   const servers = Object.fromEntries(Object.entries(children).map(([tag, child]) => [tag, { write: (msg) => writeMessage(child.stdin, msg) }]));
