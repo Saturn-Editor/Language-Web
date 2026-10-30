@@ -74,6 +74,20 @@ try {
     initializationOptions: {
       html: { provideFormatter: true, embeddedLanguages: { css: true, javascript: true } },
       css: { provideFormatter: true },
+      ts: {
+        preferences: {
+          includeInlayParameterNameHints: 'literals',
+          includeInlayParameterNameHintsWhenArgumentMatchesName: false,
+          includeInlayFunctionParameterTypeHints: true,
+          includeInlayVariableTypeHints: true,
+          includeInlayVariableTypeHintsWhenTypeMatchesName: false,
+          includeInlayPropertyDeclarationTypeHints: true,
+          includeInlayFunctionLikeReturnTypeHints: true,
+          includeInlayEnumMemberValueHints: true,
+          referencesCodeLens: { enabled: true, showOnAllFunctions: false },
+          implementationsCodeLens: { enabled: true, showOnInterfaceMethods: false },
+        },
+      },
     },
   });
 

@@ -2,9 +2,9 @@
   "id": "web",
   "name": "Web",
   "badge": "WEB",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Language module for HTML, CSS, JavaScript and TypeScript.",
-  "saturnApi": "^0.3",
+  "saturnApi": "^0.4",
   "main": "module.js",
   "requires": [
     {
@@ -24,7 +24,12 @@
     "workspaceContains:**/tsconfig.json",
     "workspaceContains:**/jsconfig.json",
     "workspaceContains:**/*.js",
-    "workspaceContains:**/*.ts"
+    "workspaceContains:**/*.ts",
+    "onLanguage:html",
+    "onLanguage:css",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "contributes": {
     "languages": [
@@ -59,7 +64,10 @@
           ".jsx"
         ],
         "grammar": "grammars/javascript.tmLanguage.json",
-        "scopeName": "source.js"
+        "scopeName": "source.js",
+        "docCommentTriggers": [
+          "/**"
+        ]
       },
       {
         "id": "typescript",
@@ -71,7 +79,10 @@
           ".cts"
         ],
         "grammar": "grammars/typescript.tmLanguage.json",
-        "scopeName": "source.ts"
+        "scopeName": "source.ts",
+        "docCommentTriggers": [
+          "/**"
+        ]
       },
       {
         "id": "typescriptreact",
@@ -81,7 +92,10 @@
           ".tsx"
         ],
         "grammar": "grammars/typescriptreact.tmLanguage.json",
-        "scopeName": "source.tsx"
+        "scopeName": "source.tsx",
+        "docCommentTriggers": [
+          "/**"
+        ]
       }
     ],
     "previews": [
@@ -115,7 +129,10 @@
         "symbols",
         "references",
         "rename",
-        "formatting"
+        "formatting",
+        "inlayHints",
+        "codeLens",
+        "semanticTokens"
       ]
     },
     "fileTemplates": [
