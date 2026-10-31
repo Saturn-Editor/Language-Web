@@ -2,9 +2,9 @@
   "id": "web",
   "name": "Web",
   "badge": "WEB",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Language module for HTML, CSS, JavaScript and TypeScript.",
-  "saturnApi": "^0.4",
+  "saturnApi": "^1.0",
   "main": "module.js",
   "requires": [
     {
@@ -16,21 +16,6 @@
       "install": "Install Node.js (which includes npm) from https://nodejs.org/en/download"
     }
   ],
-  "activationEvents": [
-    "workspaceContains:**/*.html",
-    "workspaceContains:**/*.htm",
-    "workspaceContains:**/*.css",
-    "workspaceContains:**/package.json",
-    "workspaceContains:**/tsconfig.json",
-    "workspaceContains:**/jsconfig.json",
-    "workspaceContains:**/*.js",
-    "workspaceContains:**/*.ts",
-    "onLanguage:html",
-    "onLanguage:css",
-    "onLanguage:javascript",
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact"
-  ],
   "contributes": {
     "languages": [
       {
@@ -41,8 +26,7 @@
           ".htm",
           ".xhtml"
         ],
-        "grammar": "grammars/html.tmLanguage.json",
-        "scopeName": "text.html.basic"
+        "grammar": "grammars/html.tmLanguage.json"
       },
       {
         "id": "css",
@@ -50,8 +34,7 @@
         "extensions": [
           ".css"
         ],
-        "grammar": "grammars/css.tmLanguage.json",
-        "scopeName": "source.css"
+        "grammar": "grammars/css.tmLanguage.json"
       },
       {
         "id": "javascript",
@@ -64,7 +47,6 @@
           ".jsx"
         ],
         "grammar": "grammars/javascript.tmLanguage.json",
-        "scopeName": "source.js",
         "docCommentTriggers": [
           "/**"
         ]
@@ -79,7 +61,6 @@
           ".cts"
         ],
         "grammar": "grammars/typescript.tmLanguage.json",
-        "scopeName": "source.ts",
         "docCommentTriggers": [
           "/**"
         ]
@@ -92,7 +73,6 @@
           ".tsx"
         ],
         "grammar": "grammars/typescriptreact.tmLanguage.json",
-        "scopeName": "source.tsx",
         "docCommentTriggers": [
           "/**"
         ]
@@ -109,13 +89,6 @@
       }
     ],
     "languageServer": {
-      "languages": [
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "typescriptreact"
-      ],
       "command": "node",
       "args": [
         "server/launch.js",
